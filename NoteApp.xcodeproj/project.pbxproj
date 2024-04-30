@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF0883A72BDD5B9A00EF987A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0883A62BDD5B9A00EF987A /* SettingsView.swift */; };
+		AF0883A92BDD5BAA00EF987A /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0883A82BDD5BAA00EF987A /* SettingsModel.swift */; };
+		AF0883AB2BDD5BC000EF987A /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0883AA2BDD5BC000EF987A /* SettingsController.swift */; };
+		AF0883AD2BDFE93B00EF987A /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0883AC2BDFE93B00EF987A /* TableCell.swift */; };
+		AF0883AF2BE003DD00EF987A /* SettingsType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0883AE2BE003DD00EF987A /* SettingsType.swift */; };
 		AFBED7102BDA77D80068FAED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBED70F2BDA77D80068FAED /* AppDelegate.swift */; };
 		AFBED7122BDA77D80068FAED /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBED7112BDA77D80068FAED /* SceneDelegate.swift */; };
 		AFBED7192BDA77DC0068FAED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFBED7182BDA77DC0068FAED /* Assets.xcassets */; };
@@ -20,6 +25,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AF0883A62BDD5B9A00EF987A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AF0883A82BDD5BAA00EF987A /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		AF0883AA2BDD5BC000EF987A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		AF0883AC2BDFE93B00EF987A /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
+		AF0883AE2BE003DD00EF987A /* SettingsType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsType.swift; sourceTree = "<group>"; };
 		AFBED70C2BDA77D80068FAED /* NoteApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFBED70F2BDA77D80068FAED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AFBED7112BDA77D80068FAED /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +55,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AF0883A52BDD5B7D00EF987A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				AF0883A62BDD5B9A00EF987A /* SettingsView.swift */,
+				AF0883AE2BE003DD00EF987A /* SettingsType.swift */,
+				AF0883AC2BDFE93B00EF987A /* TableCell.swift */,
+				AF0883A82BDD5BAA00EF987A /* SettingsModel.swift */,
+				AF0883AA2BDD5BC000EF987A /* SettingsController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		AFBED7032BDA77D80068FAED = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +99,7 @@
 		AFBED7232BDA7BF40068FAED /* MVC */ = {
 			isa = PBXGroup;
 			children = (
+				AF0883A52BDD5B7D00EF987A /* Settings */,
 				AFBED7242BDA7C000068FAED /* Home */,
 			);
 			path = MVC;
@@ -170,6 +193,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF0883AD2BDFE93B00EF987A /* TableCell.swift in Sources */,
+				AF0883AF2BE003DD00EF987A /* SettingsType.swift in Sources */,
+				AF0883AB2BDD5BC000EF987A /* SettingsController.swift in Sources */,
+				AF0883A92BDD5BAA00EF987A /* SettingsModel.swift in Sources */,
+				AF0883A72BDD5B9A00EF987A /* SettingsView.swift in Sources */,
 				AFBED73C2BDBBC460068FAED /* NotesCell.swift in Sources */,
 				AFBED7402BDBBCA00068FAED /* HomeController.swift in Sources */,
 				AFBED7422BDBBCDD0068FAED /* HomeModel.swift in Sources */,

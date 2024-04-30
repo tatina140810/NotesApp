@@ -2,13 +2,14 @@ import UIKit
 import SnapKit
 
 protocol HomeViewProtocol: AnyObject {
+    func successNotes(notes: [NotesModel])
     
 }
 
 class HomeView: UIViewController {
-    
-    
     private var controller: HomeControllerProtocol?
+    
+    private var notes: [NotesModel] = []
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -32,10 +33,10 @@ class HomeView: UIViewController {
         return button
     }()
     
-    var collectionView: UICollectionView!
-    let layout = UICollectionViewFlowLayout()
-    let cellidentifier = "Cell"
-    let itemsPerRow: CGFloat = 2
+    private var collectionView: UICollectionView!
+    private var layout = UICollectionViewFlowLayout()
+    private var cellidentifier = "Cell"
+    private var itemsPerRow: CGFloat = 2
     
     
     private lazy var notesCollectionView: UICollectionView = {
@@ -48,8 +49,9 @@ class HomeView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         controller = HomeController(view: self)
+        controller?.onGetNotes()
         navigationControllerSettings()
         setuoConstreints()
         layout.scrollDirection = .vertical
@@ -92,18 +94,27 @@ class HomeView: UIViewController {
         
     }
     
+   
+    
     @objc func settingsButtonTapped() {
-        
+        let vc = SettingsView()
+       navigationController?.pushViewController(vc, animated: true)
     }
 }
+
 extension HomeView: HomeViewProtocol{
+    
+    func successNotes(notes: [NotesModel]) {
+        self.notes = notes
+        notesCollectionView.reloadData()
+    }
     
 }
 
 extension HomeView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var cellData: [NotesModel] {
-        return NotesData().notes
+        return notes
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
