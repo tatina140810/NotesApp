@@ -4,7 +4,7 @@ import SnapKit
 
 protocol TableCellDelegate {
     
-    func switchButtonChahged()
+    func switchButtonChanged(sender: Bool)
 }
 
 class TableCell: UITableViewCell {
@@ -40,13 +40,13 @@ class TableCell: UITableViewCell {
     
     let switchButton: UISwitch = {
         let switchButton = UISwitch()
-        switchButton.addTarget(TableCell.self, action: #selector(switchButtonChahged), for: .valueChanged)
+        switchButton.addTarget(TableCell.self, action: #selector(switchButtonChanged(sender:)), for: .valueChanged)
         
         return switchButton
     }()
     
-        @objc func switchButtonChahged(sender: UISwitch) {
-            delegate?.switchButtonChahged()
+    @objc func switchButtonChanged(sender: UISwitch) {
+        delegate?.switchButtonChanged(sender: sender.isOn)
     }
 
 

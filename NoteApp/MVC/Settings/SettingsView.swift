@@ -3,7 +3,6 @@ import SnapKit
 protocol SettingsViewProtocol: AnyObject {
     func sucsessSettings(settings: [Settings])
    
-    
 }
 
 class SettingsView: UIViewController {
@@ -75,11 +74,12 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableCell else {
             return UITableViewCell()
         }
-        cell.delegate = self 
+        
         let setting = settings[indexPath.row]
         cell.settingsImage.image = setting.settingsImage
         cell.title.text = setting.title
         cell.button.setTitle(setting.buttonTitle, for: .normal)
+        cell.delegate = self
         
         switch indexPath.row {
         case 0:
@@ -91,7 +91,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         default:
             break
         }
-
         return cell
     }
 
@@ -108,12 +107,14 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
 
 }
 extension SettingsView: TableCellDelegate {
-    func switchButtonChahged() {
-        if self.traitCollection.userInterfaceStyle == .dark {
-                } else {
-                    overrideUserInterfaceStyle = .dark
-                }
-        setNeedsStatusBarAppearanceUpdate()
+    
+    func switchButtonChanged(sender: Bool) {
+        print("work")
+//        if self.traitCollection.userInterfaceStyle == .dark {
+//                } else {
+//                    self.overrideUserInterfaceStyle = .dark
+//                }
+//        setNeedsStatusBarAppearanceUpdate()
     }
         
 }
