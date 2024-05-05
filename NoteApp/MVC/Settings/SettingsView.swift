@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 protocol SettingsViewProtocol: AnyObject {
     func sucsessSettings(settings: [Settings])
-   
+    
 }
 
 class SettingsView: UIViewController {
@@ -25,7 +25,7 @@ class SettingsView: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TableCell.self, forCellReuseIdentifier: "cell")
-      
+        
         
         navigationControllerSettings()
         tableViewConstraints()
@@ -34,24 +34,31 @@ class SettingsView: UIViewController {
     
     func tableViewConstraints() {
         view.addSubview(tableView)
-           tableView.snp.makeConstraints { make in
-               make.top.equalToSuperview().offset(120)
-               make.leading.equalToSuperview().offset(20)
-               make.trailing.equalToSuperview().offset(-20)
-               make.bottom.equalToSuperview()
-           }
-           
-       }
-
+        tableView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(120)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview()
+        }
+        
+    }
+    
     private func navigationControllerSettings() {
         navigationItem.title = "Settings"
         
         let label = UIBarButtonItem(title: "Label", style: .plain , target: self, action: #selector(labelButtonTapped))
-      label.tintColor = .blue
+        label.tintColor = .blue
         
         navigationItem.leftBarButtonItem = label
     }
     @objc func labelButtonTapped() {
+        navigationController?.pushViewController(HomeView(), animated: true)
+        
+    }
+    private func updateInterfaceForTheme(isDark: Bool? = nil) {
+        if let isDark = isDark {
+            UserDefaults.standard.set(isDark, forKey: "Theme")
+        }
         
     }
     
@@ -60,14 +67,14 @@ extension SettingsView: SettingsViewProtocol{
     func sucsessSettings(settings: [Settings]){
         self.settings = settings
         tableView.reloadData()
-     
+        
     }
     
 }
 extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return settings.count
-
+        return settings.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -93,9 +100,9 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-      
+        
         return 50.0
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -104,19 +111,23 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             headerView.contentView.backgroundColor = UIColor.blue // Любой цвет, который вам нужен
         }
     }
-
+    
 }
 extension SettingsView: TableCellDelegate {
     
-    func switchButtonChanged(sender: Bool) {
-        print("work")
-//        if self.traitCollection.userInterfaceStyle == .dark {
-//                } else {
-//                    self.overrideUserInterfaceStyle = .dark
-//                }
-//        setNeedsStatusBarAppearanceUpdate()
-    }
+    func switchButtonChanged(isOn: Bool) {
+        if isOn {
+            UserDefaults.standard.set(isOn, forKey: "Theme")
+            overrideUserInterfaceStyle = .dark
+            
+        }
+        else{
+            UserDefaults.standard.set(isOn, forKey: "Theme")
+            overrideUserInterfaceStyle = .light
+            
+        }
         
+    }
 }
-    
-    
+
+

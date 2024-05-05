@@ -2,9 +2,9 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol TableCellDelegate {
+protocol TableCellDelegate: AnyObject {
     
-    func switchButtonChanged(sender: Bool)
+    func switchButtonChanged(isOn: Bool)
 }
 
 class TableCell: UITableViewCell {
@@ -39,23 +39,25 @@ class TableCell: UITableViewCell {
     }()
     
     let switchButton: UISwitch = {
-        let switchButton = UISwitch()
-        switchButton.addTarget(TableCell.self, action: #selector(switchButtonChanged(sender:)), for: .valueChanged)
-        
-        return switchButton
+        let view = UISwitch()
+        view.isOn = UserDefaults.standard.bool(forKey: "Theme")
+        return view
     }()
-    
-    @objc func switchButtonChanged(sender: UISwitch) {
-        delegate?.switchButtonChanged(sender: sender.isOn)
+    private func setupSwitch() {
+        switchButton.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+        
     }
-
-
+    @objc func switchValueChanged(_ sender: UISwitch) {
+        delegate?.switchButtonChanged(isOn: sender.isOn)
+    }
+    
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-           super.init(style: style, reuseIdentifier: reuseIdentifier)
-           cellConstraints()
-            setupCell()
-        
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        cellConstraints()
+        setupCell()
+        setupSwitch()
     }
     
     func cellConstraints() {
@@ -76,37 +78,37 @@ class TableCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-20)
         }
         
-        addSubview(switchButton)
+        contentView.addSubview(switchButton)
         switchButton.snp.makeConstraints{ make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)}
         
     }
     var settingsType: SettingsType = .none {
-           didSet {
-               updateCell()
-           }
-       }
-       
-       private func updateCell() {
-           switch settingsType {
-           case .none:
-               button.isHidden = true
-               switchButton.isHidden = true
-           case .withRightButton:
-               switchButton.isHidden = true
-           case .withSwitch:
-               button.isHidden = true
-           }
-       }
+        didSet {
+            updateCell()
+        }
+    }
+    
+    private func updateCell() {
+        switch settingsType {
+        case .none:
+            button.isHidden = true
+            switchButton.isHidden = true
+        case .withRightButton:
+            switchButton.isHidden = true
+        case .withSwitch:
+            button.isHidden = true
+        }
+    }
     
     func cellType(settingsType: SettingsType) {
         self.settingsType = settingsType
     }
     private func setupCell() {
-           
+        
         self.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
-       }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

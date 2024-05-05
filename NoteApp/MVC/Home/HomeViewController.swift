@@ -57,6 +57,14 @@ class HomeView: UIViewController {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 3
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: "Theme") == false {
+            view.overrideUserInterfaceStyle = .light
+        } else {
+            view.overrideUserInterfaceStyle = .dark
+        }
+    }
     
     private func navigationControllerSettings() {
         navigationItem.title = "Title"
