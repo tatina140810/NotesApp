@@ -22,23 +22,22 @@ class SettingsView: UIViewController {
         view.backgroundColor = .systemBackground
         controller = SettingsController(view: self)
         controller?.onGetSettings()
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(TableCell.self, forCellReuseIdentifier: "cell")
-        
-        
         navigationControllerSettings()
-        tableViewConstraints()
+        tableViewSettings()
         
     }
     
-    func tableViewConstraints() {
+    func tableViewSettings() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(SettingsCell.self, forCellReuseIdentifier: "cell")
+        
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(120)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview()
+            make.height.equalTo(150)
         }
         
     }
@@ -76,9 +75,14 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         return settings.count
         
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 2 {
+            CoreDataServices.shared.deleteAllNotes(in: "Note")
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? SettingsCell else {
             return UITableViewCell()
         }
         
@@ -87,6 +91,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         cell.title.text = setting.title
         cell.button.setTitle(setting.buttonTitle, for: .normal)
         cell.delegate = self
+
         
         switch indexPath.row {
         case 0:
@@ -106,14 +111,18 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         return 50.0
     }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        // Установка цвета фона для заголовка (если он есть)
+    
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = UIColor.blue // Любой цвет, который вам нужен
+            headerView.contentView.backgroundColor = UIColor.blue 
         }
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
     }
     
 }
-extension SettingsView: TableCellDelegate {
+extension SettingsView: SettingsCellDelegate {
+    
     
     func switchButtonChanged(isOn: Bool) {
         if isOn {
@@ -129,5 +138,6 @@ extension SettingsView: TableCellDelegate {
         
     }
 }
+
 
 

@@ -52,7 +52,7 @@ class OnBoardingView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupConstraints()
-        UserDefaults.standard.removeObject(forKey: "isOnBoardShown")
+//        UserDefaults.standard.removeObject(forKey: "isOnBoardShown")
     }
     
     func setupConstraints() {

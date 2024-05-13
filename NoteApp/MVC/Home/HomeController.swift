@@ -1,6 +1,6 @@
 protocol HomeControllerProtocol: AnyObject {
     func onGetNotes()
-    func onSuccessNotes(notes: [NotesModel] )
+    func onSuccessNotes(notes: [Note] )
     
 }
 class HomeController {
@@ -11,12 +11,12 @@ class HomeController {
     
     init(view: HomeViewProtocol?) {
         self.view = view
-        self.model = HomeModel(controller: self)
+        self.model = HomeModel(controller: self) 
     }
     
 }
 extension HomeController: HomeControllerProtocol {
-    func onSuccessNotes(notes: [NotesModel]) {
+    func onSuccessNotes(notes: [Note]) {
         view?.successNotes(notes: notes)
     }
     
@@ -24,6 +24,8 @@ extension HomeController: HomeControllerProtocol {
         model?.getNotes()
     }
 }
+
+
     
     
     

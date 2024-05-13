@@ -2,14 +2,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol TableCellDelegate: AnyObject {
+protocol SettingsCellDelegate: AnyObject {
     
     func switchButtonChanged(isOn: Bool)
 }
 
-class TableCell: UITableViewCell {
+class SettingsCell: UITableViewCell {
     
-    var delegate: TableCellDelegate?
+    var delegate: SettingsCellDelegate?
     
     let settingsImage: UIImageView = {
         let imageView = UIImageView()

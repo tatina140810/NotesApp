@@ -1,20 +1,19 @@
-import Foundation
+
 import UIKit
 import SnapKit
 
+protocol NoteCellDelegate: AnyObject {
+    func likeButtonDidTap(index: Int)
+}
+
 class NotesCell: UICollectionViewCell {
+    static let reuseId = "note_cell"
     
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(resource: .img4Png)
-        imageView.layer.cornerRadius = 15
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    var indexPath: IndexPath?
     
-    let titleLabel: UILabel = {
+    
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "School notes"
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
@@ -23,21 +22,32 @@ class NotesCell: UICollectionViewCell {
         super.init(frame: frame)
         cellConstraints()
         
+       layer.cornerRadius = 10
     }
     
     func cellConstraints() {
-        addSubview(imageView)
-        imageView.snp.makeConstraints {make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
+        
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {make in
-            make.top.equalTo(imageView).offset(20)
-            make.leading.equalTo(20)}
+            make.top.equalToSuperview().offset(20)
+            make.leading.equalTo(20)
+        }
         
+    }
+    func fill(note: Note) {
+        titleLabel.text = note.title
+        switch note.color! {
+        case "FD6F96":
+            backgroundColor = UIColor(hex:"FD6F96")
+        case "FFEBA1":
+            backgroundColor = UIColor(hex: "FFEBA1")
+        case "95DAC1":
+            backgroundColor = UIColor(hex: "95DAC1")
+        case "6F69AC":
+            backgroundColor = UIColor(hex: "6F69AC")
+        default:
+            backgroundColor = .clear
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
