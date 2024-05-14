@@ -1,18 +1,18 @@
 
 import UIKit
 import SnapKit
+protocol NoteViewProtocol: AnyObject {
+    func saveData(title: String, description: String, note: Note)
+
+}
 
 class NoteView: UIViewController {
     
     var note: Note?
-    private let coreDataService = CoreDataServices.shared
     
-    private let colors: [UIColor] = [
-        UIColor(hex: "FD6F96"),
-        UIColor(hex: "FFEBA1"),
-        UIColor(hex: "95DAC1"),
-        UIColor(hex: "6F69AC")
-    ]
+    private var controller: NoteViewControllerProtocol?
+    
+    private let coreDataService = CoreDataServices.shared
     
     private lazy var textField: UITextField = {
         let view = UITextField()
@@ -47,17 +47,17 @@ class NoteView: UIViewController {
         setupConstraints()
         setupData()
         navigationControllerSettings()
+        controller = NoteViewController(view: self)
     }
     
     init(note: Note) {
-            self.note = note
-            super.init(nibName: nil, bundle: nil)
-        }
-        
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-        }
-    
+self.note = note
+super.init(nibName: nil, bundle: nil)
+}
+
+required init?(coder: NSCoder) {
+super.init(coder: coder)
+}
     private func setupConstraints() {
         view.addSubview(textField)
         textField.snp.makeConstraints { make in
@@ -100,30 +100,37 @@ class NoteView: UIViewController {
     }
    
     @objc private func saveButtonTapped() {
-        guard let id = note?.id, let color = note?.color else {return}
-        let date = Date()
-        coreDataService.addNote(id: id, title: textField.text ?? "", description: descriptionTextView.text ?? "", date: date, color: color)
-        let vc = HomeView()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
+        controller?.setData(title: textField.text ?? "", description: descriptionTextView.text ?? "", note: note!)
+       
+               let vc = HomeView()
+               navigationController?.pushViewController(vc, animated: true)
+           }
+           
+        
+        
     @objc private func deleteButtonTapped() {
         guard let note = note, let id = note.id  else {return}
-                let allertController = UIAlertController(title: "Delete", message: "Do you want to delete note?", preferredStyle: .alert)
-                let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
-                    self.coreDataService.delete(id: id)
-                    self.navigationController?.popViewController(animated: true)
-                }
-                let declineAction = UIAlertAction(title: "No", style: .default) {action in
+                     let allertController = UIAlertController(title: "Delete", message: "Do you want to delete note?", preferredStyle: .alert)
+                     let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
+                         self.coreDataService.delete(id: id)
+                         self.navigationController?.popViewController(animated: true)
+                     }
+                     let declineAction = UIAlertAction(title: "No", style: .default) {action in
+             
+                     }
+                     allertController.addAction(acceptAction)
+                     allertController.addAction(declineAction)
+                     present(allertController, animated: true)
+             
+    }
+}
+
+extension NoteView: NoteViewProtocol {
+    func saveData(title: String, description: String, note: Note){
+      
         
-                }
-                allertController.addAction(acceptAction)
-                allertController.addAction(declineAction)
-                present(allertController, animated: true)
-        
-        
-            }
-       
     }
 
+}
+    
 

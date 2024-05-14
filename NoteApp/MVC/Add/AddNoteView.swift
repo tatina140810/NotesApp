@@ -8,8 +8,6 @@ protocol AddNoteViewProtocol: AnyObject {
 
 class AddNoteView: UIViewController {
     
-    
-    
     private var controller: AddNoteControllerProtocol?
     
     private lazy var textField: UITextField = {

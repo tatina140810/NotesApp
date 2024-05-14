@@ -121,8 +121,8 @@ extension HomeView: UICollectionViewDelegateFlowLayout {
         return CGSize(width: (view.frame.width - 60) / 2, height: 100)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedNote = notes[indexPath.row]
-                let vc = NoteView(note: selectedNote)
+     let note = notes[indexPath.row]
+        let vc = NoteView(note: note)
 
         navigationController?.pushViewController(vc, animated: true)
     }
