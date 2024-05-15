@@ -18,8 +18,9 @@ class NoteViewModel: NoteViewModelProtocol {
     
     func saveNote(title: String, description: String, note: Note) {
         guard let id = note.id, let color = note.color else {return}
-               let date = Date()
-               coreDataService.addNote(id: id, title: title, description: description, date: date, color: color)
+        let date = Date()
+        
+        coreDataService.addNote(id: id, title: title, description: description, date: date, color: color)
     }
    
 }

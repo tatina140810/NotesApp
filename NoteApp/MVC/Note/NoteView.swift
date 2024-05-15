@@ -13,6 +13,7 @@ class NoteView: UIViewController {
     private var controller: NoteViewControllerProtocol?
     
     private let coreDataService = CoreDataServices.shared
+     
     
     private lazy var textField: UITextField = {
         let view = UITextField()
@@ -100,17 +101,20 @@ super.init(coder: coder)
     }
    
     @objc private func saveButtonTapped() {
-        controller?.setData(title: textField.text ?? "", description: descriptionTextView.text ?? "", note: note!)
+        let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
+            self.controller?.setData(title: self.textField.text ?? "", description: self.descriptionTextView.text ?? "", note: self.note!)
+            self.navigationController?.popViewController(animated: true)
+        }
+        let declineAction = UIAlertAction(title: "No", style: .default) {action in
+
+        }
+AlertHelper().showAlert(title: "Save", message: "Do you want to save a note?", style: .alert, prexentingView: self, actions: [acceptAction, declineAction])
+}
        
-               let vc = HomeView()
-               navigationController?.pushViewController(vc, animated: true)
-           }
-           
-        
         
     @objc private func deleteButtonTapped() {
         guard let note = note, let id = note.id  else {return}
-                     let allertController = UIAlertController(title: "Delete", message: "Do you want to delete note?", preferredStyle: .alert)
+        
                      let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
                          self.coreDataService.delete(id: id)
                          self.navigationController?.popViewController(animated: true)
@@ -118,10 +122,7 @@ super.init(coder: coder)
                      let declineAction = UIAlertAction(title: "No", style: .default) {action in
              
                      }
-                     allertController.addAction(acceptAction)
-                     allertController.addAction(declineAction)
-                     present(allertController, animated: true)
-             
+        AlertHelper().showAlert(title: "Delete", message: "Do you want to delete a note?", style: .alert, prexentingView: self, actions: [acceptAction, declineAction])
     }
 }
 

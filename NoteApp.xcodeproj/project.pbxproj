@@ -25,6 +25,11 @@
 		AF573AD82BEFF101003001B9 /* AddNoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573AD72BEFF101003001B9 /* AddNoteModel.swift */; };
 		AF573ADA2BF23816003001B9 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573AD92BF23816003001B9 /* NoteViewController.swift */; };
 		AF573ADC2BF2382A003001B9 /* NoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573ADB2BF2382A003001B9 /* NoteViewModel.swift */; };
+		AF573AE02BF392AB003001B9 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573ADF2BF392AB003001B9 /* AlertHelper.swift */; };
+		AF573AE22BF49EA8003001B9 /* LanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573AE12BF49EA8003001B9 /* LanguageSettingsView.swift */; };
+		AF573AE52BF49F4C003001B9 /* LnguageSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573AE42BF49F4C003001B9 /* LnguageSettingsController.swift */; };
+		AF573AE72BF49F5E003001B9 /* LanguageSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573AE62BF49F5E003001B9 /* LanguageSettingsModel.swift */; };
+		AF573AE92BF4A682003001B9 /* LanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF573AE82BF4A682003001B9 /* LanguageCell.swift */; };
 		AFBED7102BDA77D80068FAED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBED70F2BDA77D80068FAED /* AppDelegate.swift */; };
 		AFBED7122BDA77D80068FAED /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBED7112BDA77D80068FAED /* SceneDelegate.swift */; };
 		AFBED7192BDA77DC0068FAED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFBED7182BDA77DC0068FAED /* Assets.xcassets */; };
@@ -56,6 +61,11 @@
 		AF573AD72BEFF101003001B9 /* AddNoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteModel.swift; sourceTree = "<group>"; };
 		AF573AD92BF23816003001B9 /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		AF573ADB2BF2382A003001B9 /* NoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewModel.swift; sourceTree = "<group>"; };
+		AF573ADF2BF392AB003001B9 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
+		AF573AE12BF49EA8003001B9 /* LanguageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingsView.swift; sourceTree = "<group>"; };
+		AF573AE42BF49F4C003001B9 /* LnguageSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LnguageSettingsController.swift; sourceTree = "<group>"; };
+		AF573AE62BF49F5E003001B9 /* LanguageSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingsModel.swift; sourceTree = "<group>"; };
+		AF573AE82BF4A682003001B9 /* LanguageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCell.swift; sourceTree = "<group>"; };
 		AFBED70C2BDA77D80068FAED /* NoteApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFBED70F2BDA77D80068FAED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AFBED7112BDA77D80068FAED /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +148,25 @@
 			path = Note;
 			sourceTree = "<group>";
 		};
+		AF573ADD2BF39289003001B9 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				AF573ADF2BF392AB003001B9 /* AlertHelper.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		AF573AE32BF49EFF003001B9 /* Language */ = {
+			isa = PBXGroup;
+			children = (
+				AF573AE12BF49EA8003001B9 /* LanguageSettingsView.swift */,
+				AF573AE42BF49F4C003001B9 /* LnguageSettingsController.swift */,
+				AF573AE62BF49F5E003001B9 /* LanguageSettingsModel.swift */,
+				AF573AE82BF4A682003001B9 /* LanguageCell.swift */,
+			);
+			path = Language;
+			sourceTree = "<group>";
+		};
 		AFBED7032BDA77D80068FAED = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +188,7 @@
 		AFBED70E2BDA77D80068FAED /* NoteApp */ = {
 			isa = PBXGroup;
 			children = (
+				AF573ADD2BF39289003001B9 /* Helper */,
 				AF0883BC2BE8C0CD00EF987A /* Services */,
 				AFBED7232BDA7BF40068FAED /* MVC */,
 				AFBED70F2BDA77D80068FAED /* AppDelegate.swift */,
@@ -174,6 +204,7 @@
 		AFBED7232BDA7BF40068FAED /* MVC */ = {
 			isa = PBXGroup;
 			children = (
+				AF573AE32BF49EFF003001B9 /* Language */,
 				AF573ACF2BEF7CC9003001B9 /* Note */,
 				AF0883C02BE905FE00EF987A /* Add */,
 				AF0883B02BE7897400EF987A /* OnBoarding */,
@@ -276,13 +307,18 @@
 				AF0883C42BE9470E00EF987A /* HexExtention.swift in Sources */,
 				AF573AD82BEFF101003001B9 /* AddNoteModel.swift in Sources */,
 				AF0883AF2BE003DD00EF987A /* SettingsType.swift in Sources */,
+				AF573AE72BF49F5E003001B9 /* LanguageSettingsModel.swift in Sources */,
 				AF0883AB2BDD5BC000EF987A /* SettingsController.swift in Sources */,
+				AF573AE52BF49F4C003001B9 /* LnguageSettingsController.swift in Sources */,
 				AF0883A92BDD5BAA00EF987A /* SettingsModel.swift in Sources */,
 				AF573AD12BEF7CDF003001B9 /* NoteView.swift in Sources */,
 				AF0883A72BDD5B9A00EF987A /* SettingsView.swift in Sources */,
+				AF573AE22BF49EA8003001B9 /* LanguageSettingsView.swift in Sources */,
 				AF573ADC2BF2382A003001B9 /* NoteViewModel.swift in Sources */,
+				AF573AE92BF4A682003001B9 /* LanguageCell.swift in Sources */,
 				AF0883C22BE9061C00EF987A /* AddNoteView.swift in Sources */,
 				AFBED73C2BDBBC460068FAED /* NotesCell.swift in Sources */,
+				AF573AE02BF392AB003001B9 /* AlertHelper.swift in Sources */,
 				AF0883B42BE7B7FA00EF987A /* OnBoardingCell.swift in Sources */,
 				AFBED7402BDBBCA00068FAED /* HomeController.swift in Sources */,
 				AF573AD42BEFEEA8003001B9 /* Notes.xcdatamodeld in Sources */,

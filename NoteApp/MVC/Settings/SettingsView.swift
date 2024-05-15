@@ -71,15 +71,31 @@ extension SettingsView: SettingsViewProtocol{
     
 }
 extension SettingsView: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settings.count
         
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 2 {
-            CoreDataServices.shared.deleteAllNotes(in: "Note")
+        if indexPath.row == 0 {
+            let vc = LanguageSettingsView()
+            navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
+                if indexPath.row == 2 {
+                    CoreDataServices.shared.deleteAllNotes(in: "Note")
+                }
+                self.navigationController?.popViewController(animated: true)
+            }
+            let declineAction = UIAlertAction(title: "No", style: .default) {action in
+                
+            }
+            AlertHelper().showAlert(title: "Delete", message: "Do you want to delete all notes?", style: .alert, prexentingView: self, actions: [acceptAction, declineAction])
         }
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? SettingsCell else {
@@ -110,16 +126,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         
         return 50.0
     }
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-    
-        if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = UIColor.blue 
-        }
-    }
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
-    
 }
 extension SettingsView: SettingsCellDelegate {
     
