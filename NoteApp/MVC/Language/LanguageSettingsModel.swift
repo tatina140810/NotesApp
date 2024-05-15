@@ -12,6 +12,7 @@ protocol LanguageSettingsModelProtocol: AnyObject {
     
 }
 struct Language {
+    var languageImage: UIImage
     var languageTitle: String
     var language: String
 }
@@ -20,12 +21,15 @@ class LanguageSettingsModel {
     weak var controller: LanguageSettingsControllerProtocol?
     
     lazy var language: [Language] = [
-        Language(languageTitle: "Русский",
+        Language(languageImage: UIImage(resource: .kyrg),
+                 languageTitle: "Кыргызский",
+                 language: "Кыргыз"),
+        Language(languageImage: UIImage(resource: .rush),
+                 languageTitle: "Русский",
                  language: "русский"),
-        Language(languageTitle: "Английский",
-                 language: "English"),
-        Language(languageTitle: "Кыргызский",
-                 language: "Кыргыз")
+        Language(languageImage: UIImage(resource: .usa),
+                 languageTitle: "Английский",
+                 language: "English")
     ]
     init(controller: LanguageSettingsControllerProtocol) {
         self.controller = controller

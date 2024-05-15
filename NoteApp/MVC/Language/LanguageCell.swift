@@ -3,7 +3,16 @@ import UIKit
 import SnapKit
 
 class LanguageCell: UITableViewCell {
-   
+    
+    let languageImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "network")
+        imageView.layer.cornerRadius = 20
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+      
+        return imageView
+    }()
     
     let languageTitle: UILabel = {
         let label = UILabel()
@@ -26,15 +35,22 @@ class LanguageCell: UITableViewCell {
     }
     
     func cellConstraints() {
+        addSubview(languageImage)
+        languageImage.snp.makeConstraints{ make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(40)
+            make.width.equalTo(40)}
+        
         addSubview(languageTitle)
         languageTitle.snp.makeConstraints {make in
             make.top.equalToSuperview().offset(5)
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalTo(languageImage.snp.trailing).offset(20)
         }
         addSubview(language)
         language.snp.makeConstraints{ make in
             make.top.equalTo(languageTitle.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalTo(languageImage.snp.trailing).offset(20)
         }
         
     }

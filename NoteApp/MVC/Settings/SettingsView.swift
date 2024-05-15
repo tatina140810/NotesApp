@@ -82,11 +82,11 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             let vc = LanguageSettingsView()
             navigationController?.pushViewController(vc, animated: true)
             
-        } else {
+        } else if indexPath.row == 2 {
             let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
-                if indexPath.row == 2 {
+//                if indexPath.row == 2 {
                     CoreDataServices.shared.deleteAllNotes(in: "Note")
-                }
+            
                 self.navigationController?.popViewController(animated: true)
             }
             let declineAction = UIAlertAction(title: "No", style: .default) {action in

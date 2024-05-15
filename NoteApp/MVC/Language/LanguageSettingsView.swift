@@ -75,6 +75,7 @@ extension LanguageSettingsView: UITableViewDelegate, UITableViewDataSource {
         }
         
         let language = language[indexPath.row]
+        cell.languageImage.image = language.languageImage
         cell.languageTitle.text = language.languageTitle
         cell.language.text = language.language
 
