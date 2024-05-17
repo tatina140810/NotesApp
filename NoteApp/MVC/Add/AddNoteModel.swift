@@ -26,7 +26,14 @@ class AddNoteModel: AddNoteModelProtocol {
         let id = UUID().uuidString
         let date = Date()
         let color = generateColor()
-        coreDataService.addNote(id: id, title: title, description: description, date: date, color: color)
+        coreDataService.addNote(id: id, title: title, description: description, date: date, color: color) { response in
+            if response == .failur {
+                self.controller?.onFailurSave()
+                
+            } else {
+                self.controller?.onSaccessSave()
+            }
+        }
     }
     
     private func generateColor() -> String {

@@ -81,21 +81,25 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             let vc = LanguageSettingsView()
             navigationController?.pushViewController(vc, animated: true)
-            
         } else if indexPath.row == 2 {
-            let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
-//                if indexPath.row == 2 {
-                    CoreDataServices.shared.deleteAllNotes(in: "Note")
-            
+            AlertHelper().showAlert(title: "Delete", message: "Do you want to delete all Notes?", style: .alert, prexentingView: self) { action in
+                if action == .action1 {
+                    CoreDataServices.shared.deleteAllNotes(in: "Note") { response in
+                        if response == .failur {
+                            AlertHelper().showAlert(title: "Error", message: "Delete notes failed", style: .alert, prexentingView: self) { _ in
+                                self.navigationController?.popViewController(animated: true)
+                            }
+                        } else if action == .action2 {
+                
+                        }
+                        
+                    }
+                }
                 self.navigationController?.popViewController(animated: true)
             }
-            let declineAction = UIAlertAction(title: "No", style: .default) {action in
-                
-            }
-            AlertHelper().showAlert(title: "Delete", message: "Do you want to delete all notes?", style: .alert, prexentingView: self, actions: [acceptAction, declineAction])
         }
     }
-    
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? SettingsCell else {

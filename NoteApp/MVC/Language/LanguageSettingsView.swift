@@ -57,7 +57,6 @@ class LanguageSettingsView: UIViewController {
 extension LanguageSettingsView: LanguageSettingsViewProtocol{
     func sucsessLanguage(language: [Language]){
         self.language = language
-//        tableView.reloadData()
         
     }
     

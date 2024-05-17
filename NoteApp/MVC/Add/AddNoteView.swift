@@ -4,6 +4,8 @@ import SnapKit
 
 protocol AddNoteViewProtocol: AnyObject {
     func sucsessData(title: String, description: String)
+    func saccessSave()
+    func failurSave()
 }
 
 class AddNoteView: UIViewController {
@@ -70,13 +72,23 @@ class AddNoteView: UIViewController {
     @objc private func saveButtonTapped() {
        
         controller?.getData(title: textField.text ?? "", description: descriptionTextView.text ?? "")
-        let vc = HomeView()
-        navigationController?.pushViewController(vc, animated: true)
+        
     }
 }
 extension AddNoteView: AddNoteViewProtocol {
+    
+    
     func sucsessData(title: String, description: String) {
         
+    }
+    func saccessSave() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func failurSave() {
+        
+        AlertHelper().showAlertWithOneAction(title: "Error", message: "Failed to save note", style: .alert, prexentingView: self) {action in
+        }
     }
     
 }

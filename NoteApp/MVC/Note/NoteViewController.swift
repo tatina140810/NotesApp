@@ -5,11 +5,13 @@ protocol NoteViewControllerProtocol: AnyObject {
     func onSaveData (title: String, description: String, note: Note)
     
     func setData(title: String, description: String, note: Note)
+    func onFailurNotes()
+    func onSuccessNotes()
 }
 
 
 class NoteViewController: NoteViewControllerProtocol {
-    
+ 
     weak var view: NoteViewProtocol?
     var model: NoteViewModelProtocol?
     
@@ -26,6 +28,15 @@ class NoteViewController: NoteViewControllerProtocol {
     func setData(title: String, description: String, note: Note) {
         model?.saveNote(title: title, description: description, note: note)
     }
+    func onFailurNotes() {
+        view?.failurNotes()
+    }
+    func onSuccessNotes() {
+        view?.successNotes()
+    }
+    
+    
+    
    
         
 }

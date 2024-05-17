@@ -3,7 +3,8 @@ import UIKit
 import SnapKit
 protocol NoteViewProtocol: AnyObject {
     func saveData(title: String, description: String, note: Note)
-
+    func failurNotes()
+    func successNotes()
 }
 
 class NoteView: UIViewController {
@@ -13,7 +14,7 @@ class NoteView: UIViewController {
     private var controller: NoteViewControllerProtocol?
     
     private let coreDataService = CoreDataServices.shared
-     
+    
     
     private lazy var textField: UITextField = {
         let view = UITextField()
@@ -31,16 +32,16 @@ class NoteView: UIViewController {
         return view
     }()
     
-    private lazy var saveButton: UIButton = {
+    private lazy var updateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Save", for: .normal)
+        button.setTitle("Update", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.backgroundColor = .red
         button.layer.cornerRadius = 22
-        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(updateButtonTapped), for: .touchUpInside)
         return button
     }()
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,13 +53,13 @@ class NoteView: UIViewController {
     }
     
     init(note: Note) {
-self.note = note
-super.init(nibName: nil, bundle: nil)
-}
-
-required init?(coder: NSCoder) {
-super.init(coder: coder)
-}
+        self.note = note
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
     private func setupConstraints() {
         view.addSubview(textField)
         textField.snp.makeConstraints { make in
@@ -76,8 +77,8 @@ super.init(coder: coder)
             make.height.equalTo(200)
         }
         
-        view.addSubview(saveButton)
-        saveButton.snp.makeConstraints { make in
+        view.addSubview(updateButton)
+        updateButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-100)
             make.width.equalTo(100)
             make.height.equalTo(44)
@@ -99,34 +100,61 @@ super.init(coder: coder)
         
         navigationItem.rightBarButtonItem = settingsButton
     }
-   
-    @objc private func saveButtonTapped() {
-        let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
-            self.controller?.setData(title: self.textField.text ?? "", description: self.descriptionTextView.text ?? "", note: self.note!)
-            self.navigationController?.popViewController(animated: true)
-        }
-        let declineAction = UIAlertAction(title: "No", style: .default) {action in
-
-        }
-AlertHelper().showAlert(title: "Save", message: "Do you want to save a note?", style: .alert, prexentingView: self, actions: [acceptAction, declineAction])
-}
+    
+    @objc private func updateButtonTapped() {
        
-        
+        AlertHelper().showAlert(title: "Save", message: "Do you want to save a note?", style: .alert, prexentingView: self) {action in
+            if action == .action1 {
+                self.controller?.setData(title: self.textField.text ?? "", description: self.descriptionTextView.text ?? "", note: self.note!)
+                self.navigationController?.popViewController(animated: true)
+                
+            } else if action == .action2 {
+                
+            }
+            
+        }
+    }
+    
+    
     @objc private func deleteButtonTapped() {
         guard let note = note, let id = note.id  else {return}
         
-                     let acceptAction = UIAlertAction(title: "Yes", style: .cancel) {action in
-                         self.coreDataService.delete(id: id)
-                         self.navigationController?.popViewController(animated: true)
-                     }
-                     let declineAction = UIAlertAction(title: "No", style: .default) {action in
-             
-                     }
-        AlertHelper().showAlert(title: "Delete", message: "Do you want to delete a note?", style: .alert, prexentingView: self, actions: [acceptAction, declineAction])
+        AlertHelper().showAlert(title: "Delete", message: "Do you want to delete a note?", style: .alert, prexentingView: self) {action in
+            if action == .action1 {
+                
+                self.coreDataService.delete(id: id) {response in
+                    if response == .failur {
+                        AlertHelper().showAlert(title: "Error", message: "Delete failed", style: .alert, prexentingView: self) {action in
+                            if action == .action1 {
+                            }
+                            else if action == .action2 {
+                                
+                            }
+                            
+                        }
+                    } else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    
+                }
+            } else if action == .action2 {
+                
+            }
+        }
     }
 }
 
 extension NoteView: NoteViewProtocol {
+    func successNotes() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func failurNotes() {
+        AlertHelper().showAlertWithOneAction(title: "Error", message: "Update failed", style: .alert, prexentingView: self){action in
+        }
+            
+    }
+    
     func saveData(title: String, description: String, note: Note){
       
         

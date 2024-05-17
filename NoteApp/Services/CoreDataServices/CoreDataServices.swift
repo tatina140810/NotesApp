@@ -8,6 +8,10 @@
 import CoreData
 import UIKit
 
+enum CoreDataResponse{
+    case success
+    case failur
+}
 class CoreDataServices {
     static let shared = CoreDataServices()
     private init() {
@@ -19,8 +23,11 @@ class CoreDataServices {
     private var context: NSManagedObjectContext {
         appDelegat.persistentContainer.viewContext
     }
-    func addNote(id: String, title: String, description: String, date: Date, color: String) {
+    func addNote(id: String, title: String, description: String, date: Date, color: String, completionHandler: @escaping (CoreDataResponse) -> ()) {
         guard let entity = NSEntityDescription.entity(forEntityName: "Note", in: context) else {
+            DispatchQueue.main.async {
+                completionHandler(.failur)
+            }
             return
         }
         
@@ -33,22 +40,30 @@ class CoreDataServices {
         
         
         appDelegat.saveContext()
+        DispatchQueue.main.async {
+            completionHandler(.success)
+        }
     }
     
-    func fetchNotes() -> [Note] {
+    func fetchNotes(completionHandler: @escaping (CoreDataResponse) -> ()) -> [Note] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
+            completionHandler(.success)
+            
             return try context.fetch(fetchRequest) as! [Note]
         } catch {
+            completionHandler(.failur)
             print(error.localizedDescription)
         }
         return []
     }
-    func updateNotes(id: String,  title: String, description: String, date: Date) {
+    
+    func updateNotes(id: String,  title: String, description: String, date: Date, completionHandler: @escaping (CoreDataResponse) -> ()) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
+            completionHandler(.success)
             guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
-                note.id == id}) else {
+                note.id == id})  else {
                 return
             }
             note.title = title
@@ -56,31 +71,45 @@ class CoreDataServices {
             note.date = date
            
             
-        }catch { print(error.localizedDescription)
+        }catch { 
+            completionHandler(.failur)
+            print(error.localizedDescription)
             
         }
         appDelegat.saveContext()
+        
     }
-    func delete(id: String){
+    func delete(id: String, completionHandler: @escaping (CoreDataResponse) -> ()){
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
             guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
-                note.id == id}) else {
+                note.id == id}) else { 
+                DispatchQueue.main.async {
+                    completionHandler(.failur)
+                }
                 return
             }
             context.delete(note)
             
-        }catch { print(error.localizedDescription)
+        }catch { 
+            completionHandler(.failur)
+            print(error.localizedDescription)
             
         }
         appDelegat.saveContext()
+        DispatchQueue.main.async {
+            completionHandler(.success)
+        }
     }
-    func deleteAllNotes(in entity : String) {
+    func deleteAllNotes(in entity : String, completionHandler: @escaping (CoreDataResponse) -> ()) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
             guard let notes = try context.fetch(fetchRequest) as? [Note]
             
             else {
+                DispatchQueue.main.async {
+                    completionHandler(.failur)
+                }
                 return
             } 
             notes.forEach { note in
@@ -88,9 +117,14 @@ class CoreDataServices {
             }
             
         }
-        catch { print(error.localizedDescription)
+        catch { 
+            completionHandler(.failur)
+            print(error.localizedDescription)
             
         }
         appDelegat.saveContext()
+        DispatchQueue.main.async {
+            completionHandler(.success)
+        }
     }
 }

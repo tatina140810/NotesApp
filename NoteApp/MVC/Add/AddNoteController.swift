@@ -2,12 +2,16 @@ import Foundation
 
 protocol AddNoteControllerProtocol: AnyObject {
     func getData(title: String, description: String)
+    func onSaccessSave()
+    func onFailurSave()
 }
 func onSuccessAddNote(title: String, description: String){
     
 }
 
 class AddNoteController: AddNoteControllerProtocol {
+    
+    
     weak var view: AddNoteViewProtocol?
     var model: AddNoteModelProtocol?
     
@@ -21,6 +25,13 @@ class AddNoteController: AddNoteControllerProtocol {
     }
     func onSuccessAddNote(title: String, description: String){
         view?.sucsessData(title: title, description:  description)
+    }
+    func onSaccessSave() {
+        view?.saccessSave()
+    }
+    
+    func onFailurSave() {
+        view?.failurSave()
     }
 
 }

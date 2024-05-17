@@ -36,7 +36,7 @@ class NotesCell: UICollectionViewCell {
     }
     func fill(note: Note) {
         titleLabel.text = note.title
-        switch note.color! {
+        switch note.color{
         case "FD6F96":
             backgroundColor = UIColor(hex:"FD6F96")
         case "FFEBA1":

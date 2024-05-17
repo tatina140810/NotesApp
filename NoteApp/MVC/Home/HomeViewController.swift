@@ -4,6 +4,7 @@ import SnapKit
 
 protocol HomeViewProtocol: AnyObject {
     func successNotes(notes: [Note])
+    func feilurNotes()
     
 }
 
@@ -16,10 +17,18 @@ class HomeView: UIViewController {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Search"
+        searchBar.backgroundImage = UIImage()
+        searchBar.searchTextField.addTarget(self, action: #selector(noteTextEditingChanged), for: .editingChanged)
         return searchBar
     }()
     
-    
+    private var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Create youre first note"
+        label.tintColor = .black
+        label.textAlignment = .center
+        return label
+    }()
     
     private lazy var plusButton: UIButton = {
         let button = UIButton()
@@ -67,16 +76,17 @@ class HomeView: UIViewController {
     private func setupConstreints() {
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(100)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
         }
-        
+       
         view.addSubview(notesCollectionView)
         notesCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(100)
             make.left.right.bottom.equalToSuperview()
         }
+        
         view.addSubview(plusButton)
         plusButton.snp.makeConstraints{ make in
             make.bottom.equalToSuperview().offset(-50)
@@ -84,7 +94,15 @@ class HomeView: UIViewController {
             make.height.equalTo(50)
             make.width.equalTo(50)
         }
+        view.addSubview(emptyLabel)
+        emptyLabel.snp.makeConstraints {make in
+            make.center.equalToSuperview()
+        }
         
+    }
+    @objc func noteTextEditingChanged(){
+        guard let title = searchBar.text else {return}
+        controller?.onSearchNote(title: title)
     }
   
     @objc func settingsButtonTapped() {
@@ -93,6 +111,7 @@ class HomeView: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc func plusButtonTapped() {
+        emptyLabel.isHidden = true
         
         let addNoteView = AddNoteView()
         navigationController?.pushViewController(addNoteView, animated: true)
@@ -128,8 +147,20 @@ extension HomeView: UICollectionViewDelegateFlowLayout {
     }
 }
 extension HomeView: HomeViewProtocol {
+    
     func successNotes(notes: [Note]) {
+        emptyLabel.isHidden = true
         self.notes = notes
         notesCollectionView.reloadData()
+        if notes.isEmpty == true {
+            emptyLabel.isHidden = false
+        }
+    }
+    func feilurNotes() {
+        self.notes = []
+        if notes.isEmpty == true {
+            emptyLabel.isHidden = false
+            
+        }
     }
 }

@@ -1,6 +1,8 @@
 protocol HomeControllerProtocol: AnyObject {
     func onGetNotes()
-    func onSuccessNotes(notes: [Note] )
+    func onSuccessNotes(notes: [Note])
+    func onFailurNotes()
+    func onSearchNote(title: String)
     
 }
 class HomeController {
@@ -16,6 +18,11 @@ class HomeController {
     
 }
 extension HomeController: HomeControllerProtocol {
+    func onSearchNote(title: String) {
+        model?.searchNote(title: title)
+    }
+    
+    
     func onSuccessNotes(notes: [Note]) {
         view?.successNotes(notes: notes)
     }
@@ -23,6 +30,10 @@ extension HomeController: HomeControllerProtocol {
     func onGetNotes() {
         model?.getNotes()
     }
+    func onFailurNotes() {
+        view?.feilurNotes()
+    }
+    
 }
 
 
