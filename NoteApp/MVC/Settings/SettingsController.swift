@@ -1,6 +1,9 @@
 protocol SettingsControllerProtocol: AnyObject{
     func onGetSettings()
     func onSuccessSettings(settings: [Settings])
+    func onSuccessNotes()
+    func onFailurNotes()
+    func onDeleteAllNotes(notes: [Note])
     
 }
 class SettingsController {
@@ -15,6 +18,18 @@ class SettingsController {
     
 }
 extension SettingsController: SettingsControllerProtocol{
+    func onDeleteAllNotes(notes: [Note]) {
+        model?.deleteAllNotes(notes: notes)
+    }
+    
+    func onSuccessNotes() {
+        view?.successNotes()
+    }
+    
+    func onFailurNotes() {
+        view?.failurNotes()
+    }
+    
     func onGetSettings() {
         model?.getSettings()
     }

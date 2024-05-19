@@ -18,7 +18,7 @@ class NoteView: UIViewController {
     
     private lazy var textField: UITextField = {
         let view = UITextField()
-        view.placeholder = "Add Note Title"
+        view.placeholder = "Название заметки"
         view.borderStyle = .roundedRect
         view.layer.borderWidth = 1
         return view
@@ -34,7 +34,7 @@ class NoteView: UIViewController {
     
     private lazy var updateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Update", for: .normal)
+        button.setTitle("Обновить", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.backgroundColor = .red
         button.layer.cornerRadius = 22
@@ -93,7 +93,7 @@ class NoteView: UIViewController {
     }
     
     private func navigationControllerSettings() {
-        navigationItem.title = "Title"
+        navigationItem.title = "Редактировать"
         
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteButtonTapped))
         settingsButton.tintColor = .black
@@ -103,7 +103,7 @@ class NoteView: UIViewController {
     
     @objc private func updateButtonTapped() {
        
-        AlertHelper().showAlert(title: "Save", message: "Do you want to save a note?", style: .alert, prexentingView: self) {action in
+        AlertHelper().showAlert(title: "Сохранить", message: "Вы хоите сохранить заметку?", style: .alert, prexentingView: self) {action in
             if action == .action1 {
                 self.controller?.setData(title: self.textField.text ?? "", description: self.descriptionTextView.text ?? "", note: self.note!)
                 self.navigationController?.popViewController(animated: true)
@@ -119,12 +119,12 @@ class NoteView: UIViewController {
     @objc private func deleteButtonTapped() {
         guard let note = note, let id = note.id  else {return}
         
-        AlertHelper().showAlert(title: "Delete", message: "Do you want to delete a note?", style: .alert, prexentingView: self) {action in
+        AlertHelper().showAlert(title: "Удаление", message: "Вы хотите удалить заметку?", style: .alert, prexentingView: self) {action in
             if action == .action1 {
                 
                 self.coreDataService.delete(id: id) {response in
                     if response == .failur {
-                        AlertHelper().showAlert(title: "Error", message: "Delete failed", style: .alert, prexentingView: self) {action in
+                        AlertHelper().showAlert(title: "Ошибка ", message: "Удалить заметку не удалось", style: .alert, prexentingView: self) {action in
                             if action == .action1 {
                             }
                             else if action == .action2 {
@@ -150,7 +150,7 @@ extension NoteView: NoteViewProtocol {
     }
     
     func failurNotes() {
-        AlertHelper().showAlertWithOneAction(title: "Error", message: "Update failed", style: .alert, prexentingView: self){action in
+        AlertHelper().showAlertWithOneAction(title: "Ошибка", message: "Обновление не удалось", style: .alert, prexentingView: self){action in
         }
             
     }

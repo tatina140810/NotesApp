@@ -2,6 +2,7 @@ import UIKit
 
 protocol SettingsModelProtocol: AnyObject {
     func getSettings()
+    func deleteAllNotes(notes: [Note])
     
 }
 struct Settings {
@@ -12,6 +13,9 @@ struct Settings {
 
 class SettingsModel {
     weak var controller: SettingsControllerProtocol?
+    private var notes: [Note] = []
+    
+    private let coreDataService = CoreDataServices.shared
     
     lazy var settings: [Settings] = [
         Settings(settingsImage: UIImage(systemName: "network")!,
@@ -30,6 +34,17 @@ class SettingsModel {
 }
 
 extension SettingsModel: SettingsModelProtocol {
+    func deleteAllNotes(notes: [Note]) {
+        CoreDataServices.shared.deleteAllNotes(in: "Note") { response in
+            if response == .failur {
+                self.controller?.onFailurNotes()
+            } else if response == .success{
+                self.controller?.onSuccessNotes()
+            }
+        }
+    }
+
+    
     func getSettings() {
         controller?.onSuccessSettings(settings: settings)
     }

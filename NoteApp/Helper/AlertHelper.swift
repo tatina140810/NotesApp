@@ -16,10 +16,10 @@ enum AlertActions{
 class AlertHelper {
     func showAlert(title: String, message: String, style: UIAlertController.Style, prexentingView: UIViewController, completionHandler: @escaping (AlertActions) -> Void) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: style)
-        let actionOne = UIAlertAction(title: "Yes", style: .cancel) {action in
+        let actionOne = UIAlertAction(title: "Да", style: .cancel) {action in
             completionHandler(.action1)
         }
-        let actionTwo = UIAlertAction(title: "No", style: .default) {action in
+        let actionTwo = UIAlertAction(title: "Нет", style: .default) {action in
             completionHandler(.action2)
         }
         alertController.addAction(actionOne)

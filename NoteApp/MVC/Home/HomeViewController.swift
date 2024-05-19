@@ -16,7 +16,7 @@ class HomeView: UIViewController {
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.placeholder = "Search"
+        searchBar.placeholder = "Поиск"
         searchBar.backgroundImage = UIImage()
         searchBar.searchTextField.addTarget(self, action: #selector(noteTextEditingChanged), for: .editingChanged)
         return searchBar
@@ -24,7 +24,7 @@ class HomeView: UIViewController {
     
     private var emptyLabel: UILabel = {
         let label = UILabel()
-        label.text = "Create youre first note"
+        label.text = "Создай свою первую заметку"
         label.tintColor = .black
         label.textAlignment = .center
         return label
@@ -66,7 +66,7 @@ class HomeView: UIViewController {
     }
     
     private func navigationControllerSettings() {
-        navigationItem.title = "Title"
+        navigationItem.title = "Главная"
         
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(settingsButtonTapped))
         settingsButton.tintColor = .black

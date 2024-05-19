@@ -14,7 +14,7 @@ class AddNoteView: UIViewController {
     
     private lazy var textField: UITextField = {
         let view = UITextField()
-        view.placeholder = "Add Note Title"
+        view.placeholder = "Название заметки"
         view.borderStyle = .roundedRect
         view.layer.borderWidth = 1
         return view
@@ -30,7 +30,7 @@ class AddNoteView: UIViewController {
     
     private lazy var saveButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Save", for: .normal)
+        button.setTitle("Сохранить", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.backgroundColor = .red
         button.layer.cornerRadius = 22
@@ -63,7 +63,7 @@ class AddNoteView: UIViewController {
         view.addSubview(saveButton)
         saveButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-100)
-            make.width.equalTo(100)
+            make.width.equalTo(120)
             make.height.equalTo(44)
             make.centerX.equalToSuperview()
         }
@@ -87,7 +87,7 @@ extension AddNoteView: AddNoteViewProtocol {
     
     func failurSave() {
         
-        AlertHelper().showAlertWithOneAction(title: "Error", message: "Failed to save note", style: .alert, prexentingView: self) {action in
+        AlertHelper().showAlertWithOneAction(title: "Ошибка", message: "Сохранить заметку не удалось", style: .alert, prexentingView: self) {action in
         }
     }
     

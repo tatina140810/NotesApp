@@ -32,7 +32,7 @@ class OnBoardingView: UIViewController {
     
     private lazy var skipButton: UIButton = {
         let view = UIButton(type: .system)
-        view.setTitle("Skip", for: .normal)
+        view.setTitle("Пропустиь", for: .normal)
         view.tintColor = .red
         view.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
         return view
@@ -40,7 +40,7 @@ class OnBoardingView: UIViewController {
     
     private lazy var nextButton: UIButton = {
         let view = UIButton(type: .system)
-        view.setTitle("Next", for: .normal)
+        view.setTitle("Дальше", for: .normal)
         view.backgroundColor = .red
         view.layer.cornerRadius = 20
         view.clipsToBounds = true

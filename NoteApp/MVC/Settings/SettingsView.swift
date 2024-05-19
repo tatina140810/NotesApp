@@ -2,6 +2,8 @@ import UIKit
 import SnapKit
 protocol SettingsViewProtocol: AnyObject {
     func sucsessSettings(settings: [Settings])
+    func successNotes()
+    func failurNotes()
     
 }
 
@@ -9,6 +11,9 @@ class SettingsView: UIViewController {
     private var controller: SettingsControllerProtocol?
     
     private var settings: [Settings] = []
+    
+    private var notes: [Note] = []
+    
     
     private var tableView: UITableView = {
         let view = UITableView()
@@ -43,15 +48,15 @@ class SettingsView: UIViewController {
     }
     
     private func navigationControllerSettings() {
-        navigationItem.title = "Settings"
+        navigationItem.title = "Настройки"
         
-        let label = UIBarButtonItem(title: "Label", style: .plain , target: self, action: #selector(labelButtonTapped))
-        label.tintColor = .blue
+        let backButton = UIBarButtonItem(title: "назад", style: .plain , target: self, action: #selector(backButtonTapped))
+        backButton.tintColor = .blue
         
-        navigationItem.leftBarButtonItem = label
+        navigationItem.leftBarButtonItem = backButton
     }
-    @objc func labelButtonTapped() {
-        navigationController?.pushViewController(HomeView(), animated: true)
+    @objc func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
         
     }
     private func updateInterfaceForTheme(isDark: Bool? = nil) {
@@ -63,43 +68,52 @@ class SettingsView: UIViewController {
     
 }
 extension SettingsView: SettingsViewProtocol{
+    
+    
     func sucsessSettings(settings: [Settings]){
         self.settings = settings
         tableView.reloadData()
         
     }
+    func successNotes() {
+        self.notes = []
+    }
     
+    func failurNotes() {
+        AlertHelper().showAlertWithOneAction(title: "Ошибка", message: "Удаление заметок не удалось", style: .alert, prexentingView: self) { action in
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
 }
+
 extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settings.count
         
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let vc = LanguageSettingsView()
             navigationController?.pushViewController(vc, animated: true)
-        } else if indexPath.row == 2 {
-            AlertHelper().showAlert(title: "Delete", message: "Do you want to delete all Notes?", style: .alert, prexentingView: self) { action in
+        }
+        if indexPath.row == 2 {
+            
+            AlertHelper().showAlert(title: "Удаление", message: "Вы хотите удалить все заметки?", style: .alert, prexentingView: self) { action in
                 if action == .action1 {
-                    CoreDataServices.shared.deleteAllNotes(in: "Note") { response in
-                        if response == .failur {
-                            AlertHelper().showAlert(title: "Error", message: "Delete notes failed", style: .alert, prexentingView: self) { _ in
-                                self.navigationController?.popViewController(animated: true)
-                            }
-                        } else if action == .action2 {
-                
-                        }
-                        
-                    }
+                    self.controller?.onDeleteAllNotes(notes: self.notes)
+                    self.navigationController?.popViewController(animated: true)
+                    
+                } else if action == .action2 {
+                    
                 }
-                self.navigationController?.popViewController(animated: true)
+                
             }
+            self.navigationController?.popViewController(animated: true)
         }
     }
-
+    
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? SettingsCell else {
@@ -111,7 +125,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         cell.title.text = setting.title
         cell.button.setTitle(setting.buttonTitle, for: .normal)
         cell.delegate = self
-
+        
         
         switch indexPath.row {
         case 0:
@@ -131,6 +145,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         return 50.0
     }
 }
+
 extension SettingsView: SettingsCellDelegate {
     
     

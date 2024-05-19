@@ -8,16 +8,16 @@ protocol HomeModelProtocol: AnyObject {
 
 class HomeModel {
     weak var controller: HomeControllerProtocol?
-       
-       private let coreDataService = CoreDataServices.shared
-       
-       private var notes: [Note] = []
+    
+    private let coreDataService = CoreDataServices.shared
+    
+    private var notes: [Note] = []
     private var filteredNotes: [Note] = []
-       
-       init(controller: HomeControllerProtocol) {
-           self.controller = controller
-       }
-       
+    
+    init(controller: HomeControllerProtocol) {
+        self.controller = controller
+    }
+    
 }
 extension HomeModel: HomeModelProtocol {
     func searchNote(title:String) {
@@ -30,7 +30,7 @@ extension HomeModel: HomeModelProtocol {
         } else {
             filteredNotes = notes.filter({ note in
                 note.title?.lowercased().contains(title.lowercased()) == true
-             })
+            })
             controller?.onSuccessNotes(notes: filteredNotes)
         }
     }
@@ -42,10 +42,10 @@ extension HomeModel: HomeModelProtocol {
                 
             }
         }
-               controller?.onSuccessNotes(notes:notes)
-            
-        }
+        controller?.onSuccessNotes(notes:notes)
+        
     }
+}
 
 
 
