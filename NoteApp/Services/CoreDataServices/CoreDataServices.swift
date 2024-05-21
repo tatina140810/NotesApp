@@ -69,9 +69,9 @@ class CoreDataServices {
             note.title = title
             note.desc = description
             note.date = date
-           
             
-        }catch { 
+            
+        }catch {
             completionHandler(.failur)
             print(error.localizedDescription)
             
@@ -82,16 +82,14 @@ class CoreDataServices {
     func delete(id: String, completionHandler: @escaping (CoreDataResponse) -> ()){
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
+            completionHandler(.success)
             guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
-                note.id == id}) else { 
-                DispatchQueue.main.async {
-                    completionHandler(.failur)
-                }
+                note.id == id}) else {
                 return
             }
             context.delete(note)
             
-        }catch { 
+        }catch {
             completionHandler(.failur)
             print(error.localizedDescription)
             
@@ -104,20 +102,18 @@ class CoreDataServices {
     func deleteAllNotes(in entity : String, completionHandler: @escaping (CoreDataResponse) -> ()) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
+            completionHandler(.success)
             guard let notes = try context.fetch(fetchRequest) as? [Note]
-            
+                    
             else {
-                DispatchQueue.main.async {
-                    completionHandler(.failur)
-                }
                 return
-            } 
+            }
             notes.forEach { note in
                 context.delete(note)
             }
             
         }
-        catch { 
+        catch {
             completionHandler(.failur)
             print(error.localizedDescription)
             
