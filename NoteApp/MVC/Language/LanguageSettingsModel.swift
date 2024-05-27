@@ -15,6 +15,7 @@ struct Language {
     var languageImage: UIImage
     var languageTitle: String
     var language: String
+    var languageType: LanguageType
 }
 
 class LanguageSettingsModel {
@@ -23,13 +24,13 @@ class LanguageSettingsModel {
     lazy var language: [Language] = [
         Language(languageImage: UIImage(resource: .kyrg),
                  languageTitle: "Кыргызский",
-                 language: "Кыргыз"),
+                 language: "Кыргыз", languageType: .kg),
         Language(languageImage: UIImage(resource: .rush),
                  languageTitle: "Русский",
-                 language: "русский"),
+                 language: "русский", languageType: .ru),
         Language(languageImage: UIImage(resource: .usa),
                  languageTitle: "Английский",
-                 language: "English")
+                 language: "English", languageType: .en)
     ]
     init(controller: LanguageSettingsControllerProtocol) {
         self.controller = controller

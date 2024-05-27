@@ -8,7 +8,10 @@ protocol HomeViewProtocol: AnyObject {
     
 }
 
-class HomeView: UIViewController {
+class HomeView: UIViewController, LanguageViewDelegate {
+    func didLanguageSelect() {
+        setupLocalizedText()
+    }
     
     private var controller: HomeControllerProtocol?
     
@@ -16,7 +19,6 @@ class HomeView: UIViewController {
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.placeholder = "Поиск"
         searchBar.backgroundImage = UIImage()
         searchBar.searchTextField.addTarget(self, action: #selector(noteTextEditingChanged), for: .editingChanged)
         return searchBar
@@ -24,7 +26,6 @@ class HomeView: UIViewController {
     
     private var emptyLabel: UILabel = {
         let label = UILabel()
-        label.text = "Создай свою первую заметку"
         label.tintColor = .black
         label.textAlignment = .center
         return label
@@ -58,18 +59,43 @@ class HomeView: UIViewController {
         controller = HomeController(view: self)
         navigationControllerSettings()
         setupConstreints()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        controller?.onGetNotes()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+                navigationItem.hidesBackButton = true
+                updateTheme()
+        controller?.onGetNotes()
+        setupLocalizedText()
+    }
+    private func updateTheme() {
+            let isDarkTheme = UserDefaults.standard.bool(forKey: "Theme")
+            view.overrideUserInterfaceStyle = isDarkTheme ? .dark : .light
+            let tintColor: UIColor = isDarkTheme ? .white : .black
+            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor]
+            navigationItem.rightBarButtonItem?.tintColor = tintColor
+            emptyLabel.textColor = tintColor
+            searchBar.searchTextField.textColor = tintColor
+        }
+    
+    private func setupLocalizedText(){
+        navigationItem.title = "Главная".localised()
+        emptyLabel.text = "Создай свою первую заметку".localised()
+        searchBar.placeholder = "Поиск".localised()
+    }
+    
     private func navigationControllerSettings() {
-        navigationItem.title = "Главная"
+        
         
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(settingsButtonTapped))
-        settingsButton.tintColor = .black
+        
+        if UserDefaults.standard.bool(forKey: "Theme") {
+            settingsButton.tintColor = .white}
+        else {
+            settingsButton.tintColor = .black
+        }
+        
         
         navigationItem.rightBarButtonItem = settingsButton
     }
@@ -79,8 +105,9 @@ class HomeView: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(44)
         }
-       
+        
         view.addSubview(notesCollectionView)
         notesCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(100)
@@ -104,7 +131,7 @@ class HomeView: UIViewController {
         guard let title = searchBar.text else {return}
         controller?.onSearchNote(title: title)
     }
-  
+    
     @objc func settingsButtonTapped() {
         
         let vc = SettingsView()
@@ -129,7 +156,7 @@ extension HomeView: UICollectionViewDataSource {
         
         cell.fill(note: notes[indexPath.row])
         cell.indexPath = indexPath
-       
+        
         
         return cell
     }
@@ -140,9 +167,9 @@ extension HomeView: UICollectionViewDelegateFlowLayout {
         return CGSize(width: (view.frame.width - 60) / 2, height: 100)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-     let note = notes[indexPath.row]
+        let note = notes[indexPath.row]
         let vc = NoteView(note: note)
-
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }

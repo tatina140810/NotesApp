@@ -1,0 +1,17 @@
+/*
+  Localizable.strings
+  NoteApp
+
+  Created by Tatina Dzhakypbekova on 22/5/24.
+*/
+
+"Поиск" = "Search";
+"Создай свою первую заметку" = "Create your first note";
+"Главная" = "Main";
+"Выберите язык" = "Choose language";
+"Настройки" = "Settings";
+"назад" = "back";
+"Язык" = "Language";
+"русский" ="russian";
+"Темная тема" = "Dark mode";
+"Очистить данные" = "Clear data";

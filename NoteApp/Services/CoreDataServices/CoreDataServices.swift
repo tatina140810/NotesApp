@@ -61,7 +61,6 @@ class CoreDataServices {
     func updateNotes(id: String,  title: String, description: String, date: Date, completionHandler: @escaping (CoreDataResponse) -> ()) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
-            completionHandler(.success)
             guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
                 note.id == id})  else {
                 return
@@ -69,7 +68,7 @@ class CoreDataServices {
             note.title = title
             note.desc = description
             note.date = date
-            
+            completionHandler(.success)
             
         }catch {
             completionHandler(.failur)
@@ -82,27 +81,24 @@ class CoreDataServices {
     func delete(id: String, completionHandler: @escaping (CoreDataResponse) -> ()){
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
-            completionHandler(.success)
+            
             guard let notes = try context.fetch(fetchRequest) as? [Note], let note = notes.first(where: { note in
                 note.id == id}) else {
                 return
             }
             context.delete(note)
-            
+            completionHandler(.success)
         }catch {
             completionHandler(.failur)
             print(error.localizedDescription)
             
         }
         appDelegat.saveContext()
-        DispatchQueue.main.async {
-            completionHandler(.success)
-        }
     }
     func deleteAllNotes(in entity : String, completionHandler: @escaping (CoreDataResponse) -> ()) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
         do {
-            completionHandler(.success)
+            
             guard let notes = try context.fetch(fetchRequest) as? [Note]
                     
             else {
@@ -111,16 +107,15 @@ class CoreDataServices {
             notes.forEach { note in
                 context.delete(note)
             }
-            
+            completionHandler(.success)
         }
+        
         catch {
             completionHandler(.failur)
             print(error.localizedDescription)
             
         }
         appDelegat.saveContext()
-        DispatchQueue.main.async {
-            completionHandler(.success)
-        }
+        
     }
 }

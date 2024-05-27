@@ -7,7 +7,11 @@ protocol SettingsViewProtocol: AnyObject {
     
 }
 
-class SettingsView: UIViewController {
+class SettingsView: UIViewController, LanguageViewDelegate {
+    func didLanguageSelect() {
+        setupLocalizedText()
+    }
+    
     private var controller: SettingsControllerProtocol?
     
     private var settings: [Settings] = []
@@ -29,6 +33,8 @@ class SettingsView: UIViewController {
         controller?.onGetSettings()
         navigationControllerSettings()
         tableViewSettings()
+        setupLocalizedText()
+        updateTheme()
         
     }
     
@@ -46,23 +52,26 @@ class SettingsView: UIViewController {
         }
         
     }
+    private func setupLocalizedText(){
+        navigationItem.title = "Настройки".localised()
+        navigationItem.leftBarButtonItem?.title = "назад".localised()
+        
+    }
+    private func updateTheme() {
+           let isDarkTheme = UserDefaults.standard.bool(forKey: "Theme")
+           view.overrideUserInterfaceStyle = isDarkTheme ? .dark : .light
+           let tintColor: UIColor = isDarkTheme ? .white : .black
+           navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor]
+           navigationItem.rightBarButtonItem?.tintColor = tintColor
+       }
     
     private func navigationControllerSettings() {
-        navigationItem.title = "Настройки"
         
         let backButton = UIBarButtonItem(title: "назад", style: .plain , target: self, action: #selector(backButtonTapped))
-        backButton.tintColor = .blue
         
-        navigationItem.leftBarButtonItem = backButton
     }
     @objc func backButtonTapped() {
         navigationController?.popViewController(animated: true)
-        
-    }
-    private func updateInterfaceForTheme(isDark: Bool? = nil) {
-        if let isDark = isDark {
-            UserDefaults.standard.set(isDark, forKey: "Theme")
-        }
         
     }
     
@@ -94,8 +103,9 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let vc = LanguageSettingsView()
-            navigationController?.pushViewController(vc, animated: true)
+            let languageView = LanguageSettingsView()
+            languageView.delegate = self
+            navigationController?.pushViewController(languageView, animated: true)
         }
         if indexPath.row == 2 {
             
@@ -150,19 +160,12 @@ extension SettingsView: SettingsCellDelegate {
     
     
     func switchButtonChanged(isOn: Bool) {
-        if isOn {
-            UserDefaults.standard.set(isOn, forKey: "Theme")
-            overrideUserInterfaceStyle = .dark
-            
-        }
-        else{
-            UserDefaults.standard.set(isOn, forKey: "Theme")
-            overrideUserInterfaceStyle = .light
-            
-        }
+                UserDefaults.standard.set(isOn, forKey: "Theme")
+                updateTheme()
+            }
         
     }
-}
+
 
 
 

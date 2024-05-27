@@ -25,10 +25,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             rootViewController = OnBoardingView()
             UserDefaults.standard.set(true, forKey: "isOnBoardShown")
         }
-        
+     
         let navigationController = UINavigationController(rootViewController: rootViewController)
-        
         window?.rootViewController = navigationController
+        
+        if UserDefaults.standard.bool(forKey: "Theme") {
+            window?.overrideUserInterfaceStyle = .dark } 
+        else {
+                window?.overrideUserInterfaceStyle = .light
+            }
+        
         window?.makeKeyAndVisible()
     }
     

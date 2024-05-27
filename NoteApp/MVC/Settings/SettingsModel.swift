@@ -28,6 +28,7 @@ class SettingsModel {
                  title: "Очистить данные",
                  buttonTitle: "")
     ]
+    
     init(controller: SettingsControllerProtocol) {
         self.controller = controller
     }

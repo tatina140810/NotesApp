@@ -9,13 +9,24 @@ import UIKit
 import SnapKit
 protocol LanguageSettingsViewProtocol: AnyObject {
     func sucsessLanguage(language: [Language])
-    
+}
+protocol LanguageViewDelegate: AnyObject{
+    func didLanguageSelect()
 }
 
 class LanguageSettingsView: UIViewController {
+    
+    weak var delegate: LanguageViewDelegate?
     private var controller: LanguageSettingsControllerProtocol?
     
     private var language: [Language] = []
+    
+    private var titleLabel: UILabel = {
+        let label = UILabel()
+        
+        label.font = UIFont.systemFont(ofSize: 20)
+        return label
+    }()
     
     private var tableView: UITableView = {
         let view = UITableView()
@@ -30,21 +41,34 @@ class LanguageSettingsView: UIViewController {
         controller = LanguageSettingsController(view: self)
         controller?.onGetLanguageSettings()
         tableViewSettings()
+        setUpUI()
+        setupLocalizedText()
         
+    }
+    
+    func setUpUI() {
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints{ make in
+            make.top.equalToSuperview().offset(110)
+            make.leading.equalToSuperview().offset(20)
+        }
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(195)
+        }
+    }
+    
+    func setupLocalizedText() {
+        titleLabel.text = "Выберите язык".localised()
     }
     
     func tableViewSettings() {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(LanguageCell.self, forCellReuseIdentifier: "cell")
-        
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(120)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(195)
-        }
         
     }
     
@@ -84,6 +108,12 @@ extension LanguageSettingsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 65.0
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let languageType = language[indexPath.row].languageType
+        AppLanguageManager.shared.setAppLanguage(languageType: languageType)
+        setupLocalizedText()
+        delegate?.didLanguageSelect()
     }
     
 }
